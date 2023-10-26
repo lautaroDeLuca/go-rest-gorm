@@ -4,8 +4,8 @@ import "gorm.io/gorm"
 
 type User struct {
 	gorm.Model
-	Firstname string `gorm:"not null"`
-	Lastname  string `gorm:"not null"`
-	Email     string `gorm:"not null;unique_index"`
+	Firstname string `validate:"required"       gorm:"not null"`
+	Lastname  string `validate:"required"       gorm:"not null"`
+	Email     string `validate:"required,email" gorm:"not null;unique_index"`
 	Tasks     []Task
 }
