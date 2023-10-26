@@ -24,6 +24,7 @@ func GetUserHandler(w http.ResponseWriter, r *http.Request) {
 	if user.ID == 0 {
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte("User Not Found"))
+		return
 	}
 
 	json.NewEncoder(w).Encode(&user)
@@ -52,5 +53,23 @@ func PostUserHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Delete"))
+	var user models.User
+	params := mux.Vars(r)
+
+	db.DB.First(&user, params["id"])
+
+	deleteResult := db.DB.Delete(&user, params["id"])
+
+	if deleteResult.Error != nil {
+		w.WriteHeader(http.StatusServiceUnavailable)
+		w.Write([]byte(deleteResult.Error.Error()))
+		return
+	}
+	if deleteResult.RowsAffected == 0 {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte("User Not Found"))
+		return
+	}
+
+	json.NewEncoder(w).Encode(&user)
 }
