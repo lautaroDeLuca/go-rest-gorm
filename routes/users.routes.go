@@ -27,6 +27,8 @@ func GetUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	db.DB.Model(&user).Association("Tasks").Find(&user.Tasks)
+
 	json.NewEncoder(w).Encode(&user)
 }
 
@@ -61,7 +63,7 @@ func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
 	deleteResult := db.DB.Delete(&user, params["id"])
 
 	if deleteResult.Error != nil {
-		w.WriteHeader(http.StatusServiceUnavailable)
+		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(deleteResult.Error.Error()))
 		return
 	}

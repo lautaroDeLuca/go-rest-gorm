@@ -7,5 +7,5 @@ type User struct {
 	Firstname string `validate:"required"       gorm:"not null"`
 	Lastname  string `validate:"required"       gorm:"not null"`
 	Email     string `validate:"required,email" gorm:"not null;unique_index"`
-	Tasks     []Task
+	Tasks     []Task `                                                       json:"tasks"`
 }
