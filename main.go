@@ -24,16 +24,3 @@ func main() {
 
 	http.ListenAndServe(":3000", r)
 }
-
-type Data struct {
-	clientId  string
-	Seller    int32
-	userId    int8
-	monday    bool
-	tuesday   bool
-	wednesday bool
-	thursday  bool
-	friday    bool
-	saturday  bool
-	sunday    bool
-}
